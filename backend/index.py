@@ -1,13 +1,13 @@
 import os
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import httpx
 from dotenv import load_dotenv
 
 load_dotenv()
+
 app = FastAPI()
 
-# Pydantic model for validation
 class ToneRequest(BaseModel):
     text: str
     tone: dict
@@ -18,6 +18,44 @@ def health_check():
 
 @app.post("/api/change-tone")
 async def change_tone(request: ToneRequest):
-    print(f"Received text: {request.text}")
-    # Placeholder logic for now
-    return {"modifiedText": f"Modified: '{request.text}'"}
+    api_key = os.getenv("MISTRAL_API_KEY")
+
+    if not api_key:
+        raise HTTPException(status_code=500, detail="Mistral API key not found.")
+
+    if not request.text.strip():
+        return {"modifiedText": ""}
+
+    prompt = f"""You are a text tone adjuster. Your task is to rewrite the following text to be more {request.tone.get('x')} and {request.tone.get('y')}.
+    Respond ONLY with the rewritten text and nothing else.
+
+    Original text: "{request.text}"
+
+    Rewritten text:"""
+
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {api_key}",
+    }
+
+    data = {
+        "model": "mistral-small-latest",
+        "messages": [{"role": "user", "content": prompt}],
+    }
+
+    async with httpx.AsyncClient() as client:
+        try:
+            response = await client.post("https://api.mistral.ai/v1/chat/completions", json=data, headers=headers, timeout=30.0)
+            response.raise_for_status()  # Raise an exception for HTTP errors
+
+            result = response.json()
+            modified_text = result["choices"][0]["message"]["content"]
+
+            return {"modifiedText": modified_text.strip()}
+
+        except httpx.HTTPStatusError as e:
+            print(f"Error from Mistral API: {e.response.text}")
+            raise HTTPException(status_code=500, detail="Failed to get a response from the AI model.")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+            raise HTTPException(status_code=500, detail="An internal server error occurred.")
