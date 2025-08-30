@@ -1,10 +1,12 @@
 import React from 'react';
-import ToneMatrix from './ToneMatrix'; 
+import ToneMatrix from './ToneMatrix';
 
-function TonePicker({ onToneChange, onUndo, onRedo, onReset, canUndo, canRedo, isLoading }) {
+function TonePicker({ onToneChange, onUndo, onRedo, onReset, canUndo, canRedo, isLoading, error }) {
   return (
     <div className="picker-container">
-      <h4>Adjust Tone</h4>
+      <div className="picker-header">
+        <h4>Adjust tone</h4>
+      </div>
       
       <ToneMatrix 
         onToneChange={onToneChange} 
@@ -14,10 +16,13 @@ function TonePicker({ onToneChange, onUndo, onRedo, onReset, canUndo, canRedo, i
       <div className="action-buttons">
         <button onClick={onUndo} disabled={!canUndo || isLoading}>Undo</button>
         <button onClick={onRedo} disabled={!canRedo || isLoading}>Redo</button>
-        <button onClick={onReset} disabled={isLoading}>Reset</button>
+        <button className="reset-button" onClick={onReset} disabled={isLoading}>Reset</button>
       </div>
 
-      {isLoading && <p>Changing tone...</p>}
+      <div className="feedback-container">
+        {isLoading && <p className="loading-text">Generating...</p>}
+        {error && <p className="error-text">{error}</p>}
+      </div>
     </div>
   );
 }

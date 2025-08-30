@@ -4,7 +4,7 @@ import TextEditor from './components/TextEditor';
 import TonePicker from './components/TonePicker';
 import { changeTextTone } from './services/api';
 
-const INITIAL_TEXT = 'type here anything..';
+const INITIAL_TEXT = 'We need to finish this project by Friday.';
 
 function App() {
   const [history, setHistory] = useState({
@@ -14,65 +14,55 @@ function App() {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null); // Add state for error messages
 
-  // creating new histry timeline
   const handleTextChange = (newText) => {
+    setError(null); // Clear error on new input
     setHistory({
       past: [...history.past, history.present],
       present: newText,
-      future: [], // basically typing clears redo history
+      future: [],
     });
   };
 
   const handleToneChange = async (tone) => {
     setIsLoading(true);
+    setError(null); // Clear previous errors
     try {
       const response = await changeTextTone(history.present, tone);
-      // changing current text to past and new as current
       setHistory({
         past: [...history.past, history.present],
         present: response.modifiedText,
-        future: [], // A new tone change also clears the "redo" history
+        future: [],
       });
-    } catch (error) {
-      alert("Could not change tone. Please check the console for errors.");
+    } catch (err) {
+      // error in ui, if something went wrong
+      setError('Failed to change tone. Please try again.');
+      console.error(err);
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleUndo = () => {
-    if (history.past.length === 0) return; // Nothing to undo
-
+    if (history.past.length === 0) return;
+    setError(null);
     const previous = history.past[history.past.length - 1];
     const newPast = history.past.slice(0, history.past.length - 1);
-
-    setHistory({
-      past: newPast,
-      present: previous,
-      future: [history.present, ...history.future],
-    });
+    setHistory({ past: newPast, present: previous, future: [history.present, ...history.future] });
   };
 
   const handleRedo = () => {
-    if (history.future.length === 0) return; // Nothing to redo
-
+    if (history.future.length === 0) return;
+    setError(null);
     const next = history.future[0];
     const newFuture = history.future.slice(1);
-
-    setHistory({
-      past: [...history.past, history.present],
-      present: next,
-      future: newFuture,
-    });
+    setHistory({ past: [...history.past, history.present], present: next, future: newFuture });
   };
 
   const handleReset = () => {
-    setHistory({
-      past: [],
-      present: INITIAL_TEXT,
-      future: [],
-    });
+    setError(null);
+    setHistory({ past: [], present: INITIAL_TEXT, future: [] });
   };
 
   return (
@@ -90,6 +80,7 @@ function App() {
         canUndo={history.past.length > 0}
         canRedo={history.future.length > 0}
         isLoading={isLoading}
+        error={error} // error shown in the picker
       />
     </div>
   );
