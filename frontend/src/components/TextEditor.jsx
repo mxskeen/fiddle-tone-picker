@@ -1,15 +1,14 @@
-// frontend/src/components/TextEditor.jsx
-
 import React from 'react';
 
-function TextEditor({ text, onTextChange }) {
+function TextEditor({ text, onTextChange, disabled }) {
   return (
     <div className="editor-container">
       <textarea
         className="editor-textarea"
-        placeholder="Start typing here..."
-        value={text} 
+        value={text}
         onChange={(e) => onTextChange(e.target.value)}
+        disabled={disabled} // disabled textarea during API calls
+        placeholder="Start typing here..."
       />
     </div>
   );
