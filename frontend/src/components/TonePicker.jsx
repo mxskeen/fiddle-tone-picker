@@ -3,8 +3,8 @@ import ToneMatrix from './ToneMatrix';
 
 function TonePicker({ onToneChange, onUndo, onRedo, onReset, canUndo, canRedo, isLoading, error }) {
   return (
-    <div className="picker-container">
-      <div className="picker-header">
+    <div className="controls-card">
+      <div className="header">
         <h4>Adjust tone</h4>
       </div>
       
@@ -16,7 +16,7 @@ function TonePicker({ onToneChange, onUndo, onRedo, onReset, canUndo, canRedo, i
       <div className="action-buttons">
         <button onClick={onUndo} disabled={!canUndo || isLoading}>Undo</button>
         <button onClick={onRedo} disabled={!canRedo || isLoading}>Redo</button>
-        <button className="reset-button" onClick={onReset} disabled={isLoading}>Reset</button>
+        <button onClick={onReset} disabled={isLoading}>Reset</button>
       </div>
 
       <div className="feedback-container">

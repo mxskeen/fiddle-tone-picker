@@ -4,7 +4,7 @@ import TextEditor from './components/TextEditor';
 import TonePicker from './components/TonePicker';
 import { changeTextTone } from './services/api';
 
-const INITIAL_TEXT = 'We need to finish this project by Friday.';
+const INITIAL_TEXT = 'type something here...';
 
 function App() {
   const [history, setHistory] = useState({
@@ -14,10 +14,10 @@ function App() {
   });
 
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null); // Add state for error messages
+  const [error, setError] = useState(null);
 
   const handleTextChange = (newText) => {
-    setError(null); // Clear error on new input
+    setError(null);
     setHistory({
       past: [...history.past, history.present],
       present: newText,
@@ -27,7 +27,7 @@ function App() {
 
   const handleToneChange = async (tone) => {
     setIsLoading(true);
-    setError(null); // Clear previous errors
+    setError(null);
     try {
       const response = await changeTextTone(history.present, tone);
       setHistory({
@@ -36,7 +36,6 @@ function App() {
         future: [],
       });
     } catch (err) {
-      // error in ui, if something went wrong
       setError('Failed to change tone. Please try again.');
       console.error(err);
     } finally {
@@ -80,7 +79,7 @@ function App() {
         canUndo={history.past.length > 0}
         canRedo={history.future.length > 0}
         isLoading={isLoading}
-        error={error} // error shown in the picker
+        error={error}
       />
     </div>
   );
