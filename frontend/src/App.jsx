@@ -65,6 +65,8 @@ function App() {
   };
 
   return (
+  <div className="app-wrapper">
+    <h1 className="app-title">fiddle tone picker</h1>
     <div className="main-container">
       <TextEditor
         text={history.present}
@@ -82,7 +84,8 @@ function App() {
         error={error}
       />
     </div>
-  );
+  </div>
+);
 }
 
 export default App;
