@@ -15,14 +15,14 @@
 - **Undo/Redo**: Full history management for all text modifications.
 - **Reset**: Instantly revert the text to its original state.
 - **Loading States**: A full-screen blur and spinner provide clear visual feedback during API calls.
-- **Error Handling**: Gracefully surfaces API or network errors to the user.
-- **Light/Dark Theme**: A theme toggle for user comfort.
+- **Error Handling**: Gracefully shows API or network errors to the user.
+- **Light/Dark Theme**: A theme toggler.
 
 ## Environment (`.env`)
-The backend requires a `.env` file to store Mistral API key.
+The /backend requires a `.env` file to store Mistral API key.
 
 ```env
-MISTRAL_API_KEY="your_mistral_api_key_here"
+MISTRAL_API_KEY="your_mistral_api_key"
 ```
 
 ## Quick Start

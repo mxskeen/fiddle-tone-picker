@@ -1,5 +1,6 @@
 import os
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import httpx
 from dotenv import load_dotenv
@@ -7,6 +8,19 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:5173",
+    "https://fiddle-tonepicker.vercel.app/", # vercel origin to connect with backend
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class ToneRequest(BaseModel):
     text: str
@@ -46,7 +60,7 @@ async def change_tone(request: ToneRequest):
     async with httpx.AsyncClient() as client:
         try:
             response = await client.post("https://api.mistral.ai/v1/chat/completions", json=data, headers=headers, timeout=30.0)
-            response.raise_for_status()  # Raise an exception for HTTP errors
+            response.raise_for_status()
 
             result = response.json()
             modified_text = result["choices"][0]["message"]["content"]
