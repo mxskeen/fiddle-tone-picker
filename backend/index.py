@@ -11,7 +11,7 @@ app = FastAPI()
 
 origins = [
     "http://localhost:5173",
-    "https://fiddle-tonepicker.vercel.app/", # vercel origin to connect with backend
+    "https://fiddle-tonepicker.vercel.app", # vercel origin to connect with backend
 ]
 
 app.add_middleware(
