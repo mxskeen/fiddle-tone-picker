@@ -8,6 +8,20 @@
   --text-secondary: #6e6e73;
   --accent-primary: #007aff;
   --error: #d93025;
+  --button-background: #ffffff;
+  --button-background-hover: #f0f0f2;
+}
+
+.dark {
+  --background: #121212;
+  --surface: #1e1e1e;
+  --border: #333333;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --accent-primary: #0a84ff;
+  --error: #ff4d4f;
+  --button-background: #2a2a2a;
+  --button-background-hover: #3a3a3a;
 }
 
 body {
@@ -128,7 +142,7 @@ button {
   padding: 12px;
   border-radius: 8px;
   border: 1px solid var(--border);
-  background-color: #fff;
+  background-color: var(--button-background); 
   color: var(--text-primary);
   cursor: pointer;
   font-weight: 500;
@@ -137,7 +151,7 @@ button {
 }
 
 button:hover {
-  background-color: #f0f0f2;
+  background-color: var(--button-background-hover); 
 }
 
 button:disabled {
@@ -159,4 +173,19 @@ button:disabled {
 
 .error-text {
   color: var(--error);
+}
+
+.theme-toggle-button {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-primary);
+  padding: 8px;
+}
+.theme-toggle-button:hover {
+  background-color: var(--surface);
+  border-radius: 50%;
 }

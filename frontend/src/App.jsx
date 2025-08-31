@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import TextEditor from './components/TextEditor';
 import TonePicker from './components/TonePicker';
+import ThemeToggle from './components/ThemeToggle';
 import { changeTextTone } from './services/api';
 
-const INITIAL_TEXT = 'type something here...';
+const INITIAL_TEXT = '';
 
 function App() {
   const [history, setHistory] = useState({
@@ -15,6 +16,15 @@ function App() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [theme, setTheme] = useState('light');
+
+  useEffect(() => {
+    document.body.className = theme;
+  }, [theme]);
+
+  const handleThemeToggle = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
 
   const handleTextChange = (newText) => {
     setError(null);
@@ -65,27 +75,28 @@ function App() {
   };
 
   return (
-  <div className="app-wrapper">
-    <h1 className="app-title">fiddle tone picker</h1>
-    <div className="main-container">
-      <TextEditor
-        text={history.present}
-        onTextChange={handleTextChange}
-        disabled={isLoading}
-      />
-      <TonePicker
-        onToneChange={handleToneChange}
-        onUndo={handleUndo}
-        onRedo={handleRedo}
-        onReset={handleReset}
-        canUndo={history.past.length > 0}
-        canRedo={history.future.length > 0}
-        isLoading={isLoading}
-        error={error}
-      />
+    <div className="app-wrapper">
+      <ThemeToggle theme={theme} onToggle={handleThemeToggle} />
+      <h1 className="app-title">fiddle tone picker</h1>
+      <div className="main-container">
+        <TextEditor
+          text={history.present}
+          onTextChange={handleTextChange}
+          disabled={isLoading}
+        />
+        <TonePicker
+          onToneChange={handleToneChange}
+          onUndo={handleUndo}
+          onRedo={handleRedo}
+          onReset={handleReset}
+          canUndo={history.past.length > 0}
+          canRedo={history.future.length > 0}
+          isLoading={isLoading}
+          error={error}
+        />
+      </div>
     </div>
-  </div>
-);
+  );
 }
 
 export default App;
