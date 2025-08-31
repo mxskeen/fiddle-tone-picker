@@ -75,7 +75,8 @@ function App() {
   };
 
   return (
-    <div className="app-wrapper">
+  <>
+    <div className={`app-wrapper ${isLoading ? 'loading' : ''}`}>
       <ThemeToggle theme={theme} onToggle={handleThemeToggle} />
       <h1 className="app-title">fiddle tone picker</h1>
       <div className="main-container">
@@ -96,7 +97,15 @@ function App() {
         />
       </div>
     </div>
-  );
+
+    {/* The overlay is now outside the wrapper, so it won't get blurred */}
+    {isLoading && (
+      <div className="loading-overlay">
+        <div className="spinner"></div>
+      </div>
+    )}
+  </>
+);
 }
 
 export default App;

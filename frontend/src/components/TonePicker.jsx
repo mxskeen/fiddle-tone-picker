@@ -20,9 +20,8 @@ function TonePicker({ onToneChange, onUndo, onRedo, onReset, canUndo, canRedo, i
       </div>
 
       <div className="feedback-container">
-        {isLoading && <p className="loading-text">Generating...</p>}
-        {error && <p className="error-text">{error}</p>}
-      </div>
+  {error && <p className="error-text">{error}</p>}
+</div>
     </div>
   );
 }

@@ -8,7 +8,7 @@ function TextEditor({ text, onTextChange, disabled }) {
         value={text}
         onChange={(e) => onTextChange(e.target.value)}
         disabled={disabled} // disabled textarea during API calls
-        placeholder="Type something..."
+        placeholder="Type here something..."
       />
     </div>
   );
