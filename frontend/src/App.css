@@ -21,17 +21,23 @@ body {
 
 .main-container {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
   padding: 32px;
-  height: calc(100vh - 64px);
-  max-width: 1400px;
-  margin: 0 auto;
   gap: 32px;
+  box-sizing: border-box;
+  
+  max-width: 1100px; 
+  margin: 0 auto;
 }
 
 
 .editor-container {
   flex: 1.5;
   display: flex;
+  height: 55vh;     
+  max-height: 550px;
 }
 .editor-textarea {
   width: 100%;
